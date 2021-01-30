@@ -15,16 +15,22 @@ public class MainDemoApp {
 		
 		MembershipDAO theMembershipDAO = context.getBean("membershipDAO", MembershipDAO.class);
 		
-		theAccountDAO.addAccount();
-		System.out.println(" \nLets Call it Again \n");
-		theAccountDAO.addAccount();
+//		theAccountDAO.addAccount();
+//		System.out.println(" \nLets Call it Again \n");
+//		theAccountDAO.addAccount();
+//		
+//		System.out.println(" \nAccessing Add User \n");
+//		theAccountDAO.addUser();
+//		
+//		System.out.println(" \nRunning Member \n");
+//		theMembershipDAO.addAccount();
+		theAccountDAO.setName("foobar");
 		
-		System.out.println(" \nAccessing Add User \n");
-		theAccountDAO.addUser();
+		theAccountDAO.setServiceCode("Silver");
 		
-		System.out.println(" \nRunning Member \n");
-		theMembershipDAO.addAccount();
+		String codeString = theAccountDAO.getServiceCode();
 		
+		String nameString = theAccountDAO.getName();
 		
 		context.close();
 	}
