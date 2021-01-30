@@ -1,6 +1,13 @@
 package com.luv2code.aopdemo.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.management.RuntimeErrorException;
+
 import org.springframework.stereotype.Component;
+
+import com.luv2code.aopdemo.Account;
 
 @Component
 public class AccountDAO {
@@ -36,4 +43,24 @@ public class AccountDAO {
 	public void addUser() {
 		System.out.println(getClass() +" Doin my DB Work :Adding A User");
 	}
+	
+	public List<Account> findAccounts(){
+		List<Account> myAccounts = new ArrayList<Account>();
+		myAccounts.add(new Account("Sherif", "Gold"));
+		myAccounts.add(new Account("Ahmad", "Silver"));
+		myAccounts.add(new Account("Monrel", "Platinum"));
+		return myAccounts;
+	}
+	
+	public List<Account> findAccountsException(boolean ggg){
+		if(ggg) {
+			throw new RuntimeException("Yuppy");
+		}
+		List<Account> myAccounts = new ArrayList<Account>();
+		myAccounts.add(new Account("Sherif", "Gold"));
+		myAccounts.add(new Account("Ahmad", "Silver"));
+		myAccounts.add(new Account("Monrel", "Platinum"));
+		return myAccounts;
+	}
 }
+

@@ -1,12 +1,21 @@
 package com.luv2code.aopdemo.aspect;
 
+import java.util.List;
+
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+
+import com.luv2code.aopdemo.Account;
 
 @Aspect
 @Component
+@Order(1)
 public class MyDemoLoggingAspect {
 
 	/*
@@ -58,7 +67,7 @@ public class MyDemoLoggingAspect {
 	@Before("execution(public void add*())")
 	public void beforeAddAccountAdviceFour() {
 		System.out.println("\n======>> Executing @Before advice on addAccount() - Start with add");
-	}*/
+	}
 	
 	//point cut re usable in other advice
 	
@@ -88,11 +97,73 @@ public class MyDemoLoggingAspect {
 	
 	//execute before for only (1) excluding (2) and (3)
 	//that is execute for only forDaoPackage but not when set and getter advice is called
-	@Before("forDaoPackage() && !(getter() || setter())")
+	@Pointcut("forDaoPackage() && !(getter() || setter())")
 	private void forDaoPackageNoGetterSetter() {}
 	
 	@Before("forDaoPackageNoGetterSetter()")
 	public void performNotForGetterAndSetter() {
 		System.out.println("\n======>> This will not work for any method that start with get or set");
+	}
+	
+	@Before("execution(public void addAccount())") // this wil
+	public void beforeAddAccountAdvice() {
+		System.out.println("\n======>> Executing @Before advice on addAccount() FROm Demo");
+	}
+	
+	@Pointcut("execution(public void addAccount())") // this wil
+	public void beforeAddAccountAdviceTwo() {
+		System.out.println("\n======>> Executing Inherited FROm Demo");
+	}*/
+	
+	/* 
+	 * @AfterReturning
+	 * Execute after the method finish executing
+	 * 
+	 * after returning can also be use to transform/modify the data return from a method
+	 */
+	 
+	@AfterReturning("execution(public * findAccounts())")
+	public void beforeAddAccountAdviceTwo() {
+		System.out.println("\n======>> Executing Afterr Return");
+	}
+	
+	@AfterReturning(
+			pointcut = "execution(* com.luv2code.aopdemo.dao.AccountDAO.findAccounts(..))",
+			returning = "result")
+	public void afterReturningFindAccountsAdvice(
+			JoinPoint theJointPoint, List<Account> result) {
+		
+		String methodString = theJointPoint.getSignature().toShortString();
+		
+		System.out.println("\n======>> Executing Afterr Returning on method: "+ methodString);
+		
+		System.out.println("\n======>> Executing Afterr Returning on Result: "+ result);
+		convertAccountNamesToUpperCase(result);
+		
+	}
+
+	private void convertAccountNamesToUpperCase(List<Account> result) {
+		// TODO Auto-generated method stub
+		for(Account accn: result) {
+			String theUpperNmeString= accn.getName().toUpperCase();
+			accn.setName(theUpperNmeString);
+		}
+	}
+	
+	/*
+	 * @AfterThrowing is executed after a call to a function throw an exception
+	 * 
+	 * */
+	
+	@AfterThrowing(
+			pointcut = "execution(* com.luv2code.aopdemo.dao.AccountDAO.findAccountsException(..))",
+			throwing = "theExc")
+	public void afterThrowingFindAccountsAdvice(
+			JoinPoint theJointPoint, Throwable theExc) {
+		
+		
+		System.out.println("\n======>> Executing Afterr Throwing The Exception : "+ theExc);
+		
+		
 	}
 }

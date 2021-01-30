@@ -1,5 +1,7 @@
 package com.luv2code.aopdemo;
 
+import java.util.List;
+
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.luv2code.aopdemo.dao.AccountDAO;
@@ -24,14 +26,28 @@ public class MainDemoApp {
 //		
 //		System.out.println(" \nRunning Member \n");
 //		theMembershipDAO.addAccount();
-		theAccountDAO.setName("foobar");
+//		theAccountDAO.setName("foobar");
+//		
+//		theAccountDAO.setServiceCode("Silver");
+//		
+//		String codeString = theAccountDAO.getServiceCode();
+//		
+//		String nameString = theAccountDAO.getName();
 		
-		theAccountDAO.setServiceCode("Silver");
+//		theAccountDAO.addAccount();
+		try {
+			List<Account> theAccountskk =  theAccountDAO.findAccountsException(true);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
-		String codeString = theAccountDAO.getServiceCode();
-		
-		String nameString = theAccountDAO.getName();
-		
+//		List<Account> theAccounts =  theAccountDAO.findAccounts()
+//		
+//		System.out.println(theAccounts);
+//		
+//		for(Account ac: theAccounts) {
+//			System.out.println(ac.getName());
+//		}
 		context.close();
 	}
 
