@@ -35,11 +35,11 @@ public class MainDemoApp {
 //		String nameString = theAccountDAO.getName();
 		
 //		theAccountDAO.addAccount();
-		try {
-			List<Account> theAccountskk =  theAccountDAO.findAccountsException(true);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
+//		try {
+//			List<Account> theAccountskk =  theAccountDAO.findAccountsException(false);
+//		} catch (Exception e) {
+//			System.out.println(e.getMessage());
+//		}
 		
 //		List<Account> theAccounts =  theAccountDAO.findAccounts()
 //		
@@ -48,6 +48,8 @@ public class MainDemoApp {
 //		for(Account ac: theAccounts) {
 //			System.out.println(ac.getName());
 //		}
+		
+		theAccountDAO.findAccountsExceptionTwo(true);
 		context.close();
 	}
 

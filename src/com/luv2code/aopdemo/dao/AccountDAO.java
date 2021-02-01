@@ -2,6 +2,7 @@ package com.luv2code.aopdemo.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.management.RuntimeErrorException;
 
@@ -61,6 +62,24 @@ public class AccountDAO {
 		myAccounts.add(new Account("Ahmad", "Silver"));
 		myAccounts.add(new Account("Monrel", "Platinum"));
 		return myAccounts;
+	}
+	
+	public String findAccountsExceptionTwo(boolean ggg){
+		if(ggg) {
+			throw new RuntimeException("Error Don Happen");
+		}
+		
+		return "Yeap Executed No Error";
+	}
+	
+	public String findAccountsTest(){
+		try {
+			TimeUnit.SECONDS.sleep(5);
+			
+		} catch (InterruptedException e) {
+			// TODO: handle exception
+		}
+		return "Expect heavy traffic this morning";
 	}
 }
 

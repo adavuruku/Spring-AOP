@@ -3,8 +3,11 @@ package com.luv2code.aopdemo.aspect;
 import java.util.List;
 
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -153,7 +156,7 @@ public class MyDemoLoggingAspect {
 	/*
 	 * @AfterThrowing is executed after a call to a function throw an exception
 	 * 
-	 * */
+	 * 
 	
 	@AfterThrowing(
 			pointcut = "execution(* com.luv2code.aopdemo.dao.AccountDAO.findAccountsException(..))",
@@ -161,9 +164,58 @@ public class MyDemoLoggingAspect {
 	public void afterThrowingFindAccountsAdvice(
 			JoinPoint theJointPoint, Throwable theExc) {
 		
-		
 		System.out.println("\n======>> Executing Afterr Throwing The Exception : "+ theExc);
 		
 		
+	}
+	
+	@After("execution(* com.luv2code.aopdemo.dao.AccountDAO.findAccountsException(..))")
+	public void afterfinallyFindAccountsAdvice(JoinPoint theJointPoint) {
+		System.out.println("\n======>> Executing Afterr Advice");
+	}*/
+	
+	/*
+	 * @Around advice - execute before and after execution of a method
+	 * 
+	 * */
+//	@Around("execution(* com.luv2code.aopdemo.dao.AccountDAO.findAccountsTest(..))")
+//	public Object afterGetAccountAdvice(ProceedingJoinPoint theJointPoint) throws Throwable{
+//		
+//
+//
+//		long begin = System.currentTimeMillis();
+//		
+//		Object resultObject = theJointPoint.proceed();
+//		long end = System.currentTimeMillis();
+//		
+//		long duration = end - begin;
+//		System.out.println("\n======>> duration : "+ duration);
+//		
+//		return resultObject;
+//	}
+	
+	
+	//using @Around advice to handle the exception thats thrown in the
+	//called method. as such the method will not be aware of the error thats called
+	//this advice will handle it
+	@Around("execution(* com.luv2code.aopdemo.dao.AccountDAO.findAccountsExceptionTwo(..))")
+	public Object afterGetAccountAdviceHandleException(ProceedingJoinPoint theJointPoint) throws Throwable{
+		long begin = System.currentTimeMillis();
+		Object resultObject =null;
+		try {
+			//thats execute the method
+			resultObject = theJointPoint.proceed();
+		} catch (Exception e) {
+			//if any error in executing the method catch it here
+			System.out.println(e.getMessage());
+			resultObject = "Major Error Occurs ";
+		}
+		
+		long end = System.currentTimeMillis();
+		
+		long duration = end - begin;
+		System.out.println("\n======>> duration nmnm : "+ duration);
+		
+		return resultObject;
 	}
 }
